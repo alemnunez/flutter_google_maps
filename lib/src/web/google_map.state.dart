@@ -17,6 +17,7 @@ import '../core/google_map.dart';
 import '../core/map_items.dart' as items;
 import '../core/utils.dart' as utils;
 import 'utils.dart';
+import 'package:js/js_util.dart';
 
 class GoogleMapState extends GoogleMapStateBase {
   final htmlId = Uuid().v1();
@@ -439,6 +440,23 @@ class GoogleMapState extends GoogleMapStateBase {
       ..maxZoom = widget.maxZoom
       ..mapTypeId = widget.mapType.toString().split('.')[1]
       ..gestureHandling = widget.interactive ? 'auto' : 'none';
+    if (widget.webMapStyles != null) {
+      _mapOptions!..styles = generateMapTypeStyles(widget.webMapStyles!);
+    }
+  }
+
+  List<MapTypeStyle> generateMapTypeStyles(List<WebMapStyle> webMapStyles) {
+
+    List<MapTypeStyle> mapTypeStyles = [];
+    for (WebMapStyle webMapStyle in webMapStyles) {
+      mapTypeStyles.add(MapTypeStyle()
+        ..featureType = webMapStyle.featureType
+        ..elementType = webMapStyle.elementType
+        ..stylers = [
+            jsify(webMapStyle.stylersString)
+        ]);
+    }
+    return mapTypeStyles;
   }
 
   @override

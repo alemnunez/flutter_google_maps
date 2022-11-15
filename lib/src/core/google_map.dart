@@ -24,6 +24,7 @@ class GoogleMap extends StatefulWidget {
     this.minZoom,
     this.maxZoom,
     this.mapStyle,
+    this.webMapStyles,
     this.markers = const <Marker>{},
     this.onTap,
     this.onLongPress,
@@ -71,6 +72,9 @@ class GoogleMap extends StatefulWidget {
   /// style reference for more information regarding the supported styles.
   final String? mapStyle;
 
+  // WebMapStyles to pass along to the web Map for styling
+  final List<WebMapStyle>? webMapStyles;
+
   /// Defines whether map is interactive or not.
   final bool interactive;
 
@@ -117,4 +121,12 @@ abstract class GoogleMapStateBase extends State<GoogleMap>
       icon.endsWith('/marker_a.png') || icon.endsWith('/marker_b.png')
           ? 'packages/flutter_google_maps/'
           : '';
+}
+
+class WebMapStyle {
+  final String featureType;
+  final String elementType;
+  final Object stylersString;
+
+  const WebMapStyle({required this.featureType, required this.elementType, required this.stylersString});
 }
